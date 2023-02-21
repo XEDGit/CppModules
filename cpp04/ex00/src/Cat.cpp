@@ -26,7 +26,7 @@ Cat&	Cat::operator=(const Cat& old)
 
 void	Cat::makeSound(void) const
 {
-	std::cout << "The dog barks" << std::endl;
+	std::cout << "The cat meows" << std::endl;
 }
 
 std::string Cat::getType() const
