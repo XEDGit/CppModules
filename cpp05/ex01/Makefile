@@ -10,9 +10,9 @@ OBJ := $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.cpp=.o)))
 
 FLAGS := -std=c++98 -Wall -Wextra -Werror -I $(INCLUDE)
 
-NAME := burocracy
+NAME := 
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) | $(SRC_DIR)
 	$(info Compiling executable...)
 	$(CXX) $(FLAGS) $^ -o $@
 

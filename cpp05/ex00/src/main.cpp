@@ -23,4 +23,9 @@ int main(void)
 	{
 		std::cerr << e.what() << '\n';
 	}
+
+	std::cout << lol << std::endl << ror << std::endl;
+	lol.subGrade();
+	ror.addGrade();
+	std::cout << lol << std::endl << ror << std::endl;
 }
