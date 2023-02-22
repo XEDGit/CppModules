@@ -21,7 +21,7 @@ Cat::Cat(const Cat& old)
 
 Cat&	Cat::operator=(const Cat& old)
 {
-	std::cout << "Cat assignement operator called" << std::endl;
+	std::cout << "Cat assignment operator called" << std::endl;
 	type = old.type;
 	brain = new Brain(*old.brain);
 	return *this;

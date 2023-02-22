@@ -19,7 +19,7 @@ Brain::Brain(const Brain& old)
 
 Brain&	Brain::operator=(const Brain& old)
 {
-	std::cout << "Brain assignement operator called" << std::endl;
+	std::cout << "Brain assignment operator called" << std::endl;
 	index = old.index;
 	std::copy(old.ideas, old.ideas + old.index, ideas);
 	return *this;

@@ -19,7 +19,7 @@ WrongCat::WrongCat(const WrongCat& old)
 
 WrongCat&	WrongCat::operator=(const WrongCat& old)
 {
-	std::cout << "WrongCat assignement operator called" << std::endl;
+	std::cout << "WrongCat assignment operator called" << std::endl;
 	type = old.type;
 	return *this;
 }

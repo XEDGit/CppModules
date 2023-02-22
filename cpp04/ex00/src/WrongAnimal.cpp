@@ -19,7 +19,7 @@ WrongAnimal::WrongAnimal(const WrongAnimal& old)
 
 WrongAnimal&	WrongAnimal::operator=(const WrongAnimal& old)
 {
-	std::cout << "WrongAnimal assignement operator called" << std::endl;
+	std::cout << "WrongAnimal assignment operator called" << std::endl;
 	type = old.type;
 	return *this;
 }
