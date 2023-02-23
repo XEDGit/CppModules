@@ -3,7 +3,7 @@
 
 # include <iostream>
 
-class Form;
+class AForm;
 
 class Bureaucrat
 {
@@ -21,7 +21,8 @@ class Bureaucrat
 
 		void			addGrade();
 		void			subGrade();
-		void			signForm(Form& form);
+		void			signForm(AForm& form);
+		void			executeForm(AForm const & form);
 
 		class GradeTooLowException : public std::exception {
 			public:
@@ -35,5 +36,6 @@ class Bureaucrat
 
 std::ostream&	operator<<(std::ostream& out, const Bureaucrat &toPrint);
 
+# include <AForm.hpp>
+
 #endif
-# include <Form.hpp>

@@ -2,23 +2,23 @@
 
 Bureaucrat::Bureaucrat(std::string nname, int ngrade) : name(nname), grade(ngrade)
 {
-	std::cout << "Default constructor called" << std::endl;
+	std::cout << "Default constructor called on Bureaucrat" << std::endl;
 }
 
 Bureaucrat::Bureaucrat(const Bureaucrat &old) : name(old.name)
 {
-	std::cout << "Copy constructor called" << std::endl;
+	std::cout << "Copy constructor called on Bureaucrat" << std::endl;
 	*this = old;
 }
 
 Bureaucrat::~Bureaucrat()
 {
-	std::cout << "Destructor called" << std::endl;
+	std::cout << "Destructor called on Bureaucrat" << std::endl;
 }
 
 Bureaucrat	&Bureaucrat::operator =(const Bureaucrat &old)
 {
-	std::cout << "Copy assignment operator called" << std::endl;
+	std::cout << "Copy assignment operator called on Bureaucrat" << std::endl;
 	grade = old.grade;
 	return *this;
 }
@@ -45,6 +45,20 @@ void Bureaucrat::subGrade()
 	if (grade == 150)
 		throw GradeTooLowException();
 	grade++;
+}
+
+void Bureaucrat::signForm(Form &form)
+{
+	try
+	{
+		form.beSigned(*this);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << this->name << " couldn't sign " << form.getName() << " because " << e.what() << std::endl;
+		return;
+	}
+	std::cout << name << " signed " << form.getName() << std::endl;
 }
 
 const char *Bureaucrat::GradeTooLowException::what() const throw()
