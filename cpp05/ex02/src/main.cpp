@@ -19,5 +19,11 @@ int main()
 		c.addGrade();
 	c.signForm(sform);
 
+	a.executeForm(rform);
+	a.executeForm(rform);
+	a.executeForm(rform);
+	a.executeForm(rform);
+	c.executeForm(pform);
+	a.executeForm(pform);
 	a.executeForm(sform);
 }
