@@ -15,6 +15,13 @@ class Array {
 		Array<T>&		operator=(Array<T>& old);
 		T&				operator[](unsigned int index);
 		unsigned int	size();
+
+		class IndexOutOfBounds : public std::exception {
+  			public:
+				char * what () {
+						return "Index out of bounds";
+					}
+};
 };
 
 template <typename T>
@@ -50,7 +57,7 @@ template <typename T>
 T	&Array<T>::operator[](unsigned int index)
 {
 	if (index >= _size)
-		throw std::exception();
+		throw IndexOutOfBounds();
 	return array[index];
 }
 
