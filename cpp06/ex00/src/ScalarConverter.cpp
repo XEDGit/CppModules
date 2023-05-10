@@ -1,8 +1,37 @@
 #include <ScalarConverter.hpp>
 
-ScalarConverter::ScalarConverter(std::string str)
+ScalarConverter::ScalarConverter(std::string& str)
 {
 	type = check_type(str);
+	possible = true;
+
+	switch (type)
+	{
+		case Int:
+			possible = tryConversion(str, scStoi, &in);
+			fl = static_cast<float>(in);
+			dl = static_cast<double>(in);
+			ch = static_cast<char>(in);
+			break;
+		case Float:
+			possible = tryConversion(str, scStof, &fl);
+			dl = static_cast<double>(fl);
+			in = static_cast<int>(fl);
+			ch = static_cast<char>(fl);
+			break;
+		case Char:
+			ch = str[0];
+			dl = static_cast<double>(ch);
+			fl = static_cast<float>(ch);
+			in = static_cast<int>(ch);
+			break;
+		case Double:
+			possible = tryConversion(str, scStod, &dl);
+			fl = static_cast<float>(dl);
+			in = static_cast<int>(dl);
+			ch = static_cast<char>(dl);
+			break;
+	}
 }
 
 ScalarConverter::ScalarConverter(const ScalarConverter &old)
@@ -16,7 +45,12 @@ ScalarConverter::~ScalarConverter()
 
 ScalarConverter	&ScalarConverter::operator =(const ScalarConverter &old)
 {
-	(void) old;
+	ch = old.ch;
+	in = old.in;
+	fl = old.fl;
+	dl = old.dl;
+	type = old.type;
+	possible = old.possible;
 	return *this;
 }
 
@@ -86,55 +120,27 @@ types ScalarConverter::check_type(std::string &str)
 void ScalarConverter::converter(std::string str)
 {
 	ScalarConverter	sc(str);
-	bool			possible = false;
 
-	switch (sc.type)
-	{
-		case Int:
-			possible = sc.tryConversion(str, scStoi, sc.in);
-			sc.fl = static_cast<float>(sc.in);
-			sc.dl = static_cast<double>(sc.in);
-			sc.ch = static_cast<char>(sc.in);
-			break;
-		case Float:
-			possible = sc.tryConversion(str, scStof, sc.fl);
-			sc.dl = static_cast<double>(sc.fl);
-			sc.in = static_cast<int>(sc.fl);
-			sc.ch = static_cast<char>(sc.fl);
-			break;
-		case Char:
-			sc.ch = str[0];
-			sc.dl = static_cast<double>(sc.ch);
-			sc.fl = static_cast<float>(sc.ch);
-			sc.in = static_cast<int>(sc.ch);
-			break;
-		case Double:
-			possible = sc.tryConversion(str, scStod, sc.dl);
-			sc.fl = static_cast<float>(sc.dl);
-			sc.in = static_cast<int>(sc.dl);
-			sc.ch = static_cast<char>(sc.dl);
-			break;
-	}
-
+	float inf = std::numeric_limits<float>::infinity();
 	std::cout << "ch: ";
-	if (!possible || !sc.tryConversion(str, scStoi, sc.in))
+	if (!sc.possible || sc.fl == inf || sc.fl == -inf || sc.fl != sc.fl)
 		std::cout << "Impossible" << std::endl;
 	else if (std::isprint(sc.ch))
 		std::cout << "'" << sc.ch << "'" << std::endl;
 	else
 		std::cout << "Non displayable" << std::endl;
 	std::cout << "int: ";
-	if (!possible || !sc.tryConversion(str, scStoi, sc.in))
+	if (!sc.possible || (sc.type != Char && !sc.tryConversion(str, scStoi, (int *)0)))
 		std::cout << "Impossible" << std::endl;
 	else
 		std::cout << sc.in << std::endl;
 	std::cout << "float: " << std::fixed << std::setprecision(1);
-	if (!possible || !sc.tryConversion(str, scStof, sc.fl))
+	if (!sc.possible || (sc.type != Char && !sc.tryConversion(str, scStof, (float *)0)))
 		std::cout << "Impossible" << std::endl;
 	else
 		std::cout << sc.fl << "f" << std::endl;
 	std::cout << "double: ";
-	if (!possible || !sc.tryConversion(str, scStod, sc.dl))
+	if (!sc.possible || (sc.type != Char && !sc.tryConversion(str, scStod, (double *)0)))
 		std::cout << "Impossible" << std::endl;
 	else
 		std::cout << sc.dl << std::endl;

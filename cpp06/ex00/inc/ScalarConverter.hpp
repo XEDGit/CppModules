@@ -23,18 +23,22 @@ class ScalarConverter
 		double				dl;
 		float				fl;
 		char				ch;
+		bool				possible;
 		types				type;
-							ScalarConverter(std::string str);
+							ScalarConverter(std::string& str);
 							~ScalarConverter();
-							ScalarConverter(const ScalarConverter &old);
-		ScalarConverter& 	operator=(const ScalarConverter &old);
-		types				check_type(std::string &str);
+							ScalarConverter(const ScalarConverter& old);
+		ScalarConverter& 	operator=(const ScalarConverter& old);
+		types				check_type(std::string& str);
 		template <typename T>
-		bool				tryConversion(std::string& str, T (*func)(std::string), T& val)
+		bool				tryConversion(std::string& str, T (*func)(std::string), T* val)
 		{
 			try
 			{
-				val = func(str);
+				if (val)
+					*val = func(str);
+				else
+					func(str);
 				return true;
 			}
 			catch(const std::exception& e)
