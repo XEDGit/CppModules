@@ -12,10 +12,6 @@ enum types {
 	Double,
 };
 
-static int		scStoi(std::string str);
-static double	scStod(std::string str);
-static float	scStof(std::string str);
-
 class ScalarConverter
 {
 	private:

@@ -1,5 +1,20 @@
 #include <ScalarConverter.hpp>
 
+static int scStoi(std::string str)
+{
+	return std::stoi(str);
+}
+
+static double scStod(std::string str)
+{
+	return std::stod(str);
+}
+
+static float scStof(std::string str)
+{
+	return std::stof(str);
+}
+
 ScalarConverter::ScalarConverter(std::string& str)
 {
 	type = check_type(str);
@@ -64,21 +79,6 @@ static bool	find_substr(std::string& str1, const char* str2, int start, int len)
 	return true;
 }
 
-int scStoi(std::string str)
-{
-	return std::stoi(str);
-}
-
-double scStod(std::string str)
-{
-	return std::stod(str);
-}
-
-float scStof(std::string str)
-{
-	return std::stof(str);
-}
-
 types ScalarConverter::check_type(std::string &str)
 {
 	unsigned long i = 0;
@@ -123,7 +123,7 @@ void ScalarConverter::converter(std::string str)
 
 	float inf = std::numeric_limits<float>::infinity();
 	std::cout << "ch: ";
-	if (!sc.possible || sc.fl == inf || sc.fl == -inf || sc.fl != sc.fl)
+	if (!sc.possible || sc.in > 255 || sc.in < 0 || sc.fl == inf || sc.fl == -inf || sc.fl != sc.fl)
 		std::cout << "Impossible" << std::endl;
 	else if (std::isprint(sc.ch))
 		std::cout << "'" << sc.ch << "'" << std::endl;

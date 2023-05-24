@@ -58,17 +58,19 @@ void identify(Base& p)
 int main()
 {
 	Base	*arr[10];
+	size_t	n = 10;
 
 	srand(time(0));
 	std::cout << "og:" << std::endl;
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		arr[i] = generate();
 	}
 	std::cout << "identfy:" << std::endl;
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		identify(arr[i]);
 		identify(*arr[i]);
+		delete arr[i];
 	}
 }
