@@ -1,4 +1,4 @@
-NAME := whatever
+NAME := iter
 
 FLAGS := -Wall -Werror -Wextra -std=c++98
 

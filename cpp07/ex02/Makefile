@@ -1,4 +1,4 @@
-NAME := whatever
+NAME := array
 
 FLAGS := -Wall -Werror -Wextra -std=c++98
 

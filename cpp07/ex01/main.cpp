@@ -29,7 +29,7 @@ int main( void ) {
         iter(arr, 3, print);
     }
     {
-        std::string arr[5] = {"a", "ciao", "b", "c", "e"};
+        std::string arr[4] = {"a", "b", "c", "e"};
         std::cout << "String array printed with iter:" << std::endl;
         iter(arr, 5, print);
     }
