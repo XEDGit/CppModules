@@ -1,11 +1,13 @@
 #include <Span.hpp>
 #include <algorithm>
+
 int main(int argc, char **argv)
 {
-	int val = 2;
-	// std::vector<int> vec;
-	if (argc == 2)
-		val = atoi(argv[1]);
+	if (argc != 2) {
+		std::cerr << "Error: not enough arguments" << std::endl << "Usage: " << argv[0] << " <value to find>" << std::endl;
+		return -1;
+	}
+	unsigned long val = atoi(argv[1]);
 	std::vector<int> vec(val, 10);
 	// std::vector<int> vec2;
 	// vec.push_back(100);
