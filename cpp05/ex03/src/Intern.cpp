@@ -30,6 +30,8 @@ static int	compareName(std::string name)
 	std::string	names[] = {"robotomy request", "shrubbery creation", "presidential pardon"};
 	int i;
 	for (i = 0; i < 3 && names[i].compare(name); i++);
+	if (i < 3)
+		std::cout << "Intern creates " << name << std::endl;
 	return i;
 }
 

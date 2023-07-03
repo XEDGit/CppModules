@@ -87,34 +87,42 @@ types ScalarConverter::check_type(std::string &str)
 		str.erase(0, 1);
 	if (find_substr(str, "nan", i, 3))
 	{
-		if (str[i + 3] == 'f')
-				return Float;
-			else
-				return Double;
+		if (str[i + 3] == 'f' && !str[i + 4])
+			return Float;
+		else if (!str[i + 3])
+			return Double;
+		else
+			return Char;
 	}
 	if (str[i] == '+' || str[i] == '-')
 		i++;
 	if (find_substr(str, "inf", i, 3))
 	{
-		if (str[i + 3] == 'f')
+		if (str[i + 3] == 'f' && !str[i + 4])
 			return Float;
-		else
+		else if (!str[i + 3])
 			return Double;
+		else
+			return Char;
 	}
-	if (!std::isdigit(str[i]))
+	if (!str[i])
 		return Char;
 	while (std::isdigit(str[i]))
 		i++;
-	if (str[i] == '.')
+	if (str[i] == '.' && str[i + 1])
 		i++;
-	else if (!std::isdigit(str[i]))
+	if (!str[i])
 		return Int;
+	else if (!std::isdigit(str[i]))
+		return Char;
 	while (std::isdigit(str[i]))
 		i++;
-	if (str[i] == 'f')
+	if (str[i] == 'f' && !str[i + 1])
 		return Float;
-	else
+	else if (!str[i])
 		return Double;
+	else
+		return Char;
 }
 
 void ScalarConverter::converter(std::string str)
