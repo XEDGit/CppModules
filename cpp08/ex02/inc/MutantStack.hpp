@@ -13,15 +13,6 @@ class MutantStack : public std::stack<T, C> {
 		MutantStack() {};
 		~MutantStack() {};
 
-		// MutantStack(const MutantStack &old) {
-		// 	*this = old;
-		// };
-
-		// MutantStack&	operator=(const MutantStack &old) {
-		// 	stack::operator=(old);
-		// 	return *this;
-		// };
-
 		typedef typename C::iterator iterator;
 
 		iterator	begin(void) {

@@ -1,6 +1,6 @@
 #include <MutantStack.hpp>
 #include <list>
-#include <list>
+
 int main()
 {
 	MutantStack<int> mstack;
@@ -13,11 +13,6 @@ int main()
 	mstack.push(5);
 	mstack.push(737);
 	mstack.push(0);
-	// while (mstack.size())
-	// {
-	// 	std::cout << mstack.top() << std::endl;
-	// 	mstack.pop();
-	// }
 	{
 		MutantStack<int>::iterator it = mstack.begin();
 		MutantStack<int>::iterator ite = mstack.end();
