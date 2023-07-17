@@ -19,6 +19,12 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
+	if (!std::filesystem::is_regular_file(argv[1]))
+	{
+		std::cerr << "Error: '" << argv[1] << "' is not a regular file" << std::endl;
+		return 1;
+	}
+
 	std::ifstream input, data;
 	bool err = false;
 
