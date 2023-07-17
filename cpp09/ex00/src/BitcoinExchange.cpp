@@ -3,7 +3,9 @@
 BitcoinExchange::BitcoinExchange(std::ifstream& f)
 {
 	std::string	line;
-	while ((line = f.getline()))
+
+	std::getline(f, line);
+	while (std::getline(f, line))
 		AddToDb(line);
 }
 
@@ -18,19 +20,67 @@ BitcoinExchange::~BitcoinExchange()
 
 BitcoinExchange	&BitcoinExchange::operator =(const BitcoinExchange &old)
 {
-	std::map<int, double>::const_iterator it = old.db.cbegin();
+	std::map<int, double>::const_iterator it = old.db.begin();
 
-	while (it != old.db.cend())
+	while (it != old.db.end())
 		db[it->first] = double(it->second);
 	return *this;
 }
 
 void BitcoinExchange::AddToDb(std::string &line)
 {
+	std::string l = line;
+	l.erase(std::remove(l.begin(), l.end(), '-'), l.end());
+	try {
+		int key = std::stoi(l);
+		db[key] = std::stod(l.substr(l.find(',') + 1));
+	}
+	catch(const std::exception& e) {
+		std::cerr << "Error on line '" << line << "': " << e.what() << '\n';
+	}
 	
+}
+
+static bool hasvalue(std::string &l)
+{
+	size_t i = l.find('|') + 1;
+	while (l[i] == ' ')
+		i++;
+	if (l[i] == '-')
+		i++;
+	if (!std::isdigit(l[i]))
+		return false;
+	return true;
 }
 
 void BitcoinExchange::GetPrice(std::string &line)
 {
-	(void)line;
+	try {
+		std::string l = line;
+		l.erase(std::remove(l.begin(), l.end(), ' '), l.end());
+		size_t div = l.find('|');
+		if (div == l.npos || div == 0)
+			throw std::logic_error("bad format => " + line);
+		l.erase(std::remove(l.begin(), l.begin() + div, '-'), l.begin() + div);
+		div = l.find('|');
+		for (size_t i = 0; i < div; i++)
+			if (!std::isdigit(l[i]))
+				throw std::logic_error("bad format => " + line);
+		int key = std::stoi(l);
+		double amount = std::stod(l.substr(div + 1));
+		if ((key / 100) % 100 > 12 || (key / 100) % 100 == 0 || key % 100 > 31 || key % 100 == 0 || !hasvalue(l))
+			throw std::logic_error("bad format => " + line);
+		if (amount > 1000)
+			throw std::out_of_range("too large a number");
+		else if (amount < 0)
+			throw std::out_of_range("not a positive number");
+		std::map<int, double>::iterator high = db.lower_bound(key), low = --db.lower_bound(key);
+		if (high == db.begin() && key != (*high).first)
+			throw std::out_of_range("date is before first database entry");
+		double value = (*low).second * amount;
+		std::cout << line.substr(0, line.find('|') - 1) << " => " << amount << " = " << value << std::endl;
+	}
+	catch(const std::exception& e) {
+		std::cerr << "Error: " << e.what() << "." << std::endl;
+	}
 }

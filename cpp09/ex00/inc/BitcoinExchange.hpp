@@ -5,11 +5,13 @@
 # include <fstream>
 # include <map>
 # include <filesystem>
+# include <algorithm>
+# include <string>
 
 class BitcoinExchange
 {
 	private:
-		std::map<std::string, double>	db;
+		std::map<int, double>	db;
 	public:
 							BitcoinExchange(std::ifstream& f);
 							~BitcoinExchange();

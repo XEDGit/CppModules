@@ -8,7 +8,7 @@ OBJ_DIR := obj
 
 OBJ := $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.cpp=.o)))
 
-FLAGS := -std=c++98 -Wall -Wextra -Werror -I $(INCLUDE)
+FLAGS := -Wall -Wextra -Werror -I $(INCLUDE)
 
 NAME := btc
 
@@ -32,5 +32,5 @@ fclean: clean
 
 rebug: fclean debug
 
-debug: FLAGS  = -std=c++98 -I $(INCLUDE) -g
+debug: FLAGS  = -I $(INCLUDE) -g
 debug: $(NAME)
