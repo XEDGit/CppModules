@@ -7,21 +7,22 @@ inline bool	is_sign(const std::string& s)
 	return false;
 }
 
-RPN::RPN(char** argv)
+RPN::RPN(std::stack<std::string> argv)
 {
-	argv++;
-	while (*argv)
+	while (argv.size() > 0)
 	{
-		if ((*argv)[1] || (!std::isdigit(**argv) && !is_sign(*argv)))
+		if (argv.top()[1] || (!std::isdigit(argv.top()[0]) && !is_sign(argv.top())))
 			throw std::logic_error("not one digit or a sign");
-		if (stack.size() < 2 || !is_sign(*argv))
+		if (!is_sign(argv.top()))
 		{
-			stack.push(std::stoi(*argv));
-			argv++;
+			stack.push(std::stoi(argv.top()));
+			argv.pop();
 			continue ;
 		}
-		std::string sign = *argv;
-		argv++;
+		else if (stack.size() < 2)
+			throw std::logic_error("not enough operands");
+		std::string sign = argv.top();
+		argv.pop();
 		int v1, v2;
 		v2 = stack.top();
 		stack.pop();
