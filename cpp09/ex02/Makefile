@@ -10,7 +10,7 @@ OBJ_DIR := obj
 
 OBJ := $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.cpp=.o)))
 
-FLAGS := -I $(INCLUDE) -fconcepts
+FLAGS := -I $(INCLUDE) -fconcepts -O3 -flto
 
 NAME := pmergeme
 
