@@ -10,9 +10,9 @@ OBJ_DIR := obj
 
 OBJ := $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.cpp=.o)))
 
-FLAGS := -std=c++98 -I $(INCLUDE) 
+FLAGS := -I $(INCLUDE) -fconcepts
 
-NAME := 
+NAME := pmergeme
 
 $(NAME): $(OBJ) | $(SRC_DIR)
 	$(info Compiling executable...)
@@ -34,5 +34,5 @@ fclean: clean
 
 rebug: fclean debug
 
-debug: FLAGS  = -std=c++98 -I $(INCLUDE) -g
+debug: FLAGS  = -I $(INCLUDE) -fconcepts -g
 debug: $(NAME)
