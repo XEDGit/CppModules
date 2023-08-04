@@ -23,9 +23,9 @@ concept pushfrontmember = requires(C<T, A>& src, T val) { src.push_front(val); }
 class PmergeMe
 {
 	private:
-		const int			jacob_seq[21] = {
-			0, 2, 4, 10, 20, 42, 84, 170, 340, 682, 1364, 2730, 5460,
-			10922, 21844, 43690, 87380, 174762, 349524, 699050, 1398100
+		const int			jacob_seq[18] = {
+			0, 2, 4, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095,
+			8191, 16383, 32767, 65535, 131071
 		};
 		std::vector<int>	vec;
 		std::deque<int>		deq;

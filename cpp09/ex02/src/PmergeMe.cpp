@@ -74,35 +74,35 @@ void	PmergeMe::sort(void)
 	if (deq.size() != 1)
 	{
 		sort_one_container(vec, time_vec);
-		sort_one_container(deq, time_deq);
+		// sort_one_container(deq, time_deq);
 	}
 
-	std::cout << "Before: ";
-	for (auto i = before.begin(); i != before.end(); i++)
-		std::cout << *i << " ";
+	// std::cout << "Before: ";
+	// for (auto i = before.begin(); i != before.end(); i++)
+	// 	std::cout << *i << " ";
 
-	std::cout << std::endl << "After: ";
+	// std::cout << std::endl << "After: ";
 	for (auto i = vec.rbegin(); i != vec.rend(); i++)
 		std::cout << *i << " ";
 
-	std::chrono::microseconds end_time_vec[4], end_time_deq[4];
-	get_final_times(end_time_vec, time_vec);
-	get_final_times(end_time_deq, time_deq);
+	// std::chrono::microseconds end_time_vec[4], end_time_deq[4];
+	// get_final_times(end_time_vec, time_vec);
+	// get_final_times(end_time_deq, time_deq);
 
-	std::cout << std::endl \
-	<< "Time to make a new container with elements in pairs with std::vector : " << end_time_vec[0].count() << "us" << std::endl \
-	<< "Time to sort the pairs container by the first element with std::vector : " << end_time_vec[1].count() << "us" << std::endl \
-	<< "Time to sort the pairs container with merge-insert algorithm with std::vector : " << end_time_vec[2].count() << "us" << std::endl \
-	<< "Time to process a range of " << vec.size() << " elements with std::vector : " << end_time_vec[3].count() << "us" << std::endl \
-	<< "Time to make a new container with elements in pairs with std::deque : " << end_time_deq[0].count() << "us" << std::endl \
-	<< "Time to sort the pairs container by the first element with std::deque : " << end_time_deq[1].count() << "us" << std::endl \
-	<< "Time to sort the pairs container with merge-insert algorithm with std::deque : " << end_time_deq[2].count() << "us" << std::endl \
-	<< "Time to process a range of " << deq.size() << " elements with std::deque : " << end_time_deq[3].count() << "us" << std::endl;
+	// std::cout << std::endl \
+	// << "Time to make a new container with elements in pairs with std::vector : " << end_time_vec[0].count() << "us" << std::endl \
+	// << "Time to sort the pairs container by the first element with std::vector : " << end_time_vec[1].count() << "us" << std::endl \
+	// << "Time to sort the pairs container with merge-insert algorithm with std::vector : " << end_time_vec[2].count() << "us" << std::endl \
+	// << "Time to process a range of " << vec.size() << " elements with std::vector : " << end_time_vec[3].count() << "us" << std::endl \
+	// << "Time to make a new container with elements in pairs with std::deque : " << end_time_deq[0].count() << "us" << std::endl \
+	// << "Time to sort the pairs container by the first element with std::deque : " << end_time_deq[1].count() << "us" << std::endl \
+	// << "Time to sort the pairs container with merge-insert algorithm with std::deque : " << end_time_deq[2].count() << "us" << std::endl \
+	// << "Time to process a range of " << deq.size() << " elements with std::deque : " << end_time_deq[3].count() << "us" << std::endl;
 }
 
 void PmergeMe::sort_impl(int i, std::deque<std::pair<int, int> >& pairs)
 {
-	int bin_i = i / 2, delta = bin_i, target = pairs[i].second;
+	int bin_i = deq.size() / 2, delta = bin_i, target = pairs[i].second;
 
 	while (1)
 	{ 
@@ -165,7 +165,7 @@ void	PmergeMe::sort(std::deque<std::pair<int, int> >& pairs)
 
 void PmergeMe::sort_impl(int i, std::vector<std::pair<int, int> >& pairs)
 {
-	int bin_i = i / 2, delta = bin_i, target = pairs[i].second;
+	int bin_i = vec.size() / 2, delta = bin_i, target = pairs[i].second;
 
 	while (1)
 	{
