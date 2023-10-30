@@ -8,7 +8,7 @@ OBJ_DIR := obj
 
 OBJ := $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.cpp=.o)))
 
-FLAGS := -std=c++98 -Wall -Wextra -Werror -I $(INCLUDE)
+FLAGS := -std=c++11 -Wpedantic -Wall -Wextra -Werror -I $(INCLUDE)
 
 NAME := identify
 

@@ -1,6 +1,6 @@
 #include <Serializer.hpp>
 #include <Data.hpp>
-
+	
 int main()
 {
 	std::string name = "carl";
