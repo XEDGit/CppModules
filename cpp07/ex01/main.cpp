@@ -29,9 +29,9 @@ int main( void ) {
         iter(arr, 3, print);
     }
     {
-        std::string arr[4] = {"a", "b", "c", "e"};
+        std::string arr[4] = {"asrg", "basfdsaf", "col", "eeeee123456"};
         std::cout << "String array printed with iter:" << std::endl;
-        iter(arr, 5, print);
+        iter(arr, 4, print);
     }
     return 0;
 }

@@ -1,6 +1,6 @@
 NAME := whatever
 
-FLAGS := -Wall -Werror -Wextra -std=c++98
+FLAGS := -Wall -Werror -Wextra -Wpedantic -std=c++11
 
 INCLUDES := -I.
 
