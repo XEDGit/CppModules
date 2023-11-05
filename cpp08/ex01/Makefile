@@ -10,7 +10,7 @@ OBJ_DIR := obj
 
 OBJ := $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.cpp=.o)))
 
-FLAGS := -std=c++98 -Wall -Werror -Wextra -I $(INCLUDE)
+FLAGS := -std=c++11 -Wall -Werror -Wextra -I $(INCLUDE)
 
 NAME := span
 
@@ -34,5 +34,5 @@ fclean: clean
 
 rebug: fclean debug
 
-debug: FLAGS  = -std=c++98 -I $(INCLUDE) -g
+debug: FLAGS  = -std=c++11 -I $(INCLUDE) -g
 debug: $(NAME)

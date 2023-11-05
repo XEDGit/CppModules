@@ -26,7 +26,10 @@ class Span
 		template<class Iterator>
 		void			addIterator(Iterator begin, Iterator end)
 		{
-			if (cursor + std::distance(begin, end) > length)
+			int distance = std::distance(begin, end);
+			if (distance < 0)
+				throw std::range_error("Iterators not in the same range");
+			if (cursor + distance > length)
 				throw std::out_of_range("Range of iterators cannot fit Span");
 			while (begin != end)
 			{
