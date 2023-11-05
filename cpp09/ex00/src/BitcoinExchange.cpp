@@ -63,10 +63,24 @@ void BitcoinExchange::GetPrice(std::string &line)
 			throw std::logic_error("bad format => " + line);
 		l.erase(std::remove(l.begin(), l.begin() + div, '-'), l.begin() + div);
 		div = l.find('|');
+		if (div == l.size() - 1)
+			throw std::logic_error("bad format => " + line);
 		for (size_t i = 0; i < div; i++)
 			if (!std::isdigit(l[i]))
 				throw std::logic_error("bad format => " + line);
 		int key = std::stoi(l);
+		bool dot = false;
+		int min = l[div + 1] == '-';
+		if (min)
+			min = 2;
+		else
+			min = 1;
+		for (size_t i = div + min ; i < l.size(); i++) {
+			if (!(std::isdigit(l[i]) || (l[i] == '.' && !dot)))
+				throw std::logic_error("bad format => " + line);
+			if (l[i] == '.' && !dot)
+					dot = true;
+		}
 		double amount = std::stod(l.substr(div + 1));
 		if ((key / 100) % 100 > 12 || (key / 100) % 100 == 0 || key % 100 > 31 || key % 100 == 0 || !hasvalue(l))
 			throw std::logic_error("bad format => " + line);
@@ -74,9 +88,13 @@ void BitcoinExchange::GetPrice(std::string &line)
 			throw std::out_of_range("too large a number");
 		else if (amount < 0)
 			throw std::out_of_range("not a positive number");
-		std::map<int, double>::iterator high = db.lower_bound(key), low = --db.lower_bound(key);
+		std::map<int, double>::iterator high = db.lower_bound(key), low;
 		if (high == db.begin() && key != (*high).first)
 			throw std::out_of_range("date is before first database entry");
+		if (high == db.begin())
+			low = high;
+		else
+			low = std::prev(high);
 		double value = (*low).second * amount;
 		std::cout << line.substr(0, line.find('|') - 1) << " => " << amount << " = " << value << std::endl;
 	}
