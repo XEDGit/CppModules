@@ -12,7 +12,7 @@ OBJ := $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:.cpp=.o)))
 
 FLAGS := -I $(INCLUDE) -fconcepts -O3 -flto
 
-NAME := pmergeme
+NAME := PmergeMe
 
 $(NAME): $(OBJ) | $(SRC_DIR)
 	$(info Compiling executable...)

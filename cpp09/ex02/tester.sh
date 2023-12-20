@@ -12,7 +12,9 @@ then
 
 fi
 
-! [ -f "pmergeme" ] && echo "Executable pmergeme not found" && exit 1
+EXE="PmergeMe"
+
+! [ -f "$EXE" ] && echo "Executable ./$EXE not found" && exit 1
 
 [ -n "$1" ] && [[ "$1" =~ ^[0-9]+$ ]] && MAX_VAL=$1
 
@@ -31,7 +33,7 @@ trap "rm -f yours* exact* && echo && exit" SIGINT
 
 rm -f exact
 for i in $(eval echo "{1..$MAX_VAL}"); do printf "$i " >> exact; done
-OUT_EX=$(./pmergeme 2 1)
+OUT_EX=$(./$EXE 2 1)
 
 [[ $OUT_EX == *After* ]] && OUT_TYPE="full" || OUT_TYPE="single"
 
@@ -44,7 +46,7 @@ do
 	for i in $(eval echo "{1..$MAX_CYCLES}");
 	do
 		VALUES=$(shuf -i 1-$MAX_VAL | tr '\n' ' ')
-		OUT=$(./pmergeme $VALUES)
+		OUT=$(./$EXE $VALUES)
 		if [ "$OUT_TYPE" == "full" ]
 		then
 			GREPPED=$(printf "$OUT" | grep After)
