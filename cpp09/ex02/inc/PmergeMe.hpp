@@ -7,25 +7,18 @@
 # include <iostream>
 # include <chrono>
 
-# define TEMPLATE_CONTAINER_TO_PAIRS_CONTAINER template <typename, typename> class C, \
-		  typename T, \
-		  typename A = std::allocator<T>, \
-		  typename AP = std::allocator<std::pair<T, T> > 
-
-# define TEMPLATE_ONE_CONTAINER template <typename, typename> class C, \
-		  typename T, \
-		  typename A = std::allocator<T> 
+# define TEMPLATE_ONE_CONTAINER template <typename, typename> class C, typename T
 
 
 template <TEMPLATE_ONE_CONTAINER >
-concept pushfrontmember = requires(C<T, A>& src, T val) { src.push_front(val); };
+concept pushfrontmember = requires(C<T, std::allocator<T>>& src, T val) { src.push_front(val); };
 
 class PmergeMe
 {
 	private:
-		const int			jacob_seq[18] = {
-			0, 2, 4, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095,
-			8191, 16383, 32767, 65535, 131071
+		const int			jacob_seq[21] = {
+			1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923, 21845,
+			43691, 87381, 174763, 349525, 699051, 1398101
 		};
 		std::vector<int>	vec;
 		std::deque<int>		deq;
@@ -36,22 +29,22 @@ class PmergeMe
 		void				sort(std::vector<std::pair<int, int> >& pairs);
 
 		template <TEMPLATE_ONE_CONTAINER >
-		void	sort_one_container(C<T, A>& target, std::chrono::high_resolution_clock::time_point (&times)[4])
+		void	sort_one_container(C<T, std::allocator<T>>& target, std::chrono::high_resolution_clock::time_point (&times)[4])
 		{
 			times[0] = std::chrono::high_resolution_clock::now();
 			C<std::pair<T, T>, std::allocator<std::pair<T, T> > > pairs_container;
 			outcast = convert_to_pairs(target, pairs_container);
 			times[1] = std::chrono::high_resolution_clock::now();
-			sort_pairs(pairs_container);
+			sort_pairs(pairs_container, pairs_container.size() - 1);
 			times[2] = std::chrono::high_resolution_clock::now();
 			sort(pairs_container);
 			times[3] = std::chrono::high_resolution_clock::now();
 		}
 
 		template <TEMPLATE_ONE_CONTAINER >
-		static void	sort_pairs_internally(C<T, A>& target)
+		static void	sort_pairs_internally(C<T, std::allocator<T>>& target)
 		{
-			for (typename C<T, A>::iterator it = target.begin(); it != target.end(); it++)
+			for (typename C<T, std::allocator<T>>::iterator it = target.begin(); it != target.end(); it++)
 			{
 				T& val = *it;
 				if (val.second > val.first)
@@ -64,33 +57,35 @@ class PmergeMe
 		}
 
 		template <TEMPLATE_ONE_CONTAINER >
-		requires pushfrontmember<C, T, A>
-		void	sort_pairs(C<T, A>& target)
+		void recursive_insert(C<T, std::allocator<T>>& target, int n)
 		{
-			for (int i = 0; i < target.size(); i++)
+			if (n <= 1) 
+				return;
+			recursive_insert(target, n-1); 
+
+			T last = target[n - 1]; 
+			int j = n - 2; 
+			while (j >= 0 && target[j].first > last.first) 
 			{
-				for (int j = 0; j < target.size() - 1; j++)
-					if (target[j].first > target[j + 1].first)
-						target[j].swap(target[j + 1]);
-			}
+				target[j+1] = target[j]; 
+				j--; 
+			} 
+			target[j+1] = last; 
 		}
 
 		template <TEMPLATE_ONE_CONTAINER >
-		void	sort_pairs(C<T, A>& target)
+		void	sort_pairs(C<T, std::allocator<T>>& target, int n)
 		{
-			for (int i = target.size() - 1; i >= 0; i--)
-			{
-				for (int j = target.size() - 1; j > 0; j--)
-					if (target[j].first > target[j - 1].first)
-						target[j].swap(target[j - 1]);
-			}
+			if (n < 1)
+				return ;
+			recursive_insert(target, n + 1);
 		}
 
-		template <TEMPLATE_CONTAINER_TO_PAIRS_CONTAINER >
-		requires pushfrontmember<C, T, A>
-		static int	convert_to_pairs_impl(C<T, A>& src, C<std::pair<T, T>, AP>& dst)
+		template <TEMPLATE_ONE_CONTAINER >
+		requires pushfrontmember<C, T>
+		static int	convert_to_pairs_impl(C<T, std::allocator<T>>& src, C<std::pair<T, T>, std::allocator<std::pair<T, T>>>& dst)
 		{
-			for (typename C<T, A>::iterator it = src.begin(); it != src.end(); it++)
+			for (typename C<T, std::allocator<T>>::iterator it = src.begin(); it != src.end(); it++)
 			{
 				T last = *it;
 				it++;
@@ -101,10 +96,10 @@ class PmergeMe
 			return (-1);
 		}
 
-		template <TEMPLATE_CONTAINER_TO_PAIRS_CONTAINER >
-		static int	convert_to_pairs_impl(C<T, A>& src, C<std::pair<T, T>, AP>& dst)
+		template <TEMPLATE_ONE_CONTAINER >
+		static int	convert_to_pairs_impl(C<T, std::allocator<T>>& src, C<std::pair<T, T>, std::allocator<std::pair<T, T>>>& dst)
 		{
-			for (typename C<T, A>::iterator it = src.begin(); it != src.end(); it++)
+			for (typename C<T, std::allocator<T>>::iterator it = src.begin(); it != src.end(); it++)
 			{
 				T last = *it;
 				it++;
@@ -115,8 +110,8 @@ class PmergeMe
 			return (-1);
 		}
 
-		template <TEMPLATE_CONTAINER_TO_PAIRS_CONTAINER >
-		int	convert_to_pairs(C<T, A>& src, C<std::pair<T, T>, AP>& dst)
+		template <TEMPLATE_ONE_CONTAINER >
+		int	convert_to_pairs(C<T, std::allocator<T>>& src, C<std::pair<T, T>, std::allocator<std::pair<T, T>>>& dst)
 		{
 			int ret = convert_to_pairs_impl(src, dst);
 			sort_pairs_internally(dst);
